@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Entry</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background: #f0f2f5; }
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; width: 400px; }
+        input { width: 90%; padding: 15px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; font-size: 18px; }
+        button { width: 100%; padding: 20px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 20px; font-weight: bold; cursor: pointer; }
+        #msg { margin-top: 20px; font-size: 18px; color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Welcome</h1>
+        <p>Please enter your name to join the queue</p>
+        <input type="text" id="nameInput" placeholder="Enter Your Name">
+        <button onclick="takeToken()">GET TOKEN</button>
+        <div id="msg"></div>
+    </div>
+    <script>
+        async function takeToken() {
+            const name = document.getElementById('nameInput').value;
+            if(!name) return;
+            const res = await fetch(`http://127.0.0.1:8000/get-token?name=${name}`);
+            const data = await res.json();
+            document.getElementById('msg').innerText = data.message;
+            document.getElementById('nameInput').value = "";
+        }
+    </script>
+</body>
+</html>
