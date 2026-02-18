@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Queue Display</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding-top: 100px; }
+        .token { font-size: 150px; color: #00ff00; margin: 0; }
+        .name { font-size: 60px; color: #fff; }
+        .footer { position: fixed; bottom: 50px; width: 100%; font-size: 30px; color: #888; }
+    </style>
+</head>
+<body>
+    <h1>NOW SERVING</h1>
+    <div class="token" id="token">00</div>
+    <div class="name" id="name">Waiting...</div>
+    <div class="footer">Total Waiting: <span id="count">0</span></div>
+
+    <script>
+        setInterval(async () => {
+            const res = await fetch('https://smart-queue-systemuvicorn-main-app-host.onrender.com');
+            const data = await res.json();
+            document.getElementById('token').innerText = data.serving_token;
+            document.getElementById('name').innerText = data.serving_name;
+            document.getElementById('count').innerText = data.waiting_count;
+        }, 2000);
+    </script>
+</body>
+</html>

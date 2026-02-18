@@ -16,7 +16,7 @@
     </div>
     <script>
         async function next() {
-            const res = await fetch('http://127.0.0.1:8000/next');
+            const res = await fetch('https://smart-queue-systemuvicorn-main-app-host.onrender.com');
             const data = await res.json();
             document.getElementById('log').innerText = data.message;
         }
