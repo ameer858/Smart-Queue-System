@@ -16,12 +16,33 @@
     <div class="footer">Total Waiting: <span id="count">0</span></div>
 
     <script>
+        let lastToken = 0;
+
+        function announceToken(number) {
+            // Only speak if it's a new number and greater than 0
+            if (number > 0 && number !== lastToken) {
+                const message = new SpeechSynthesisUtterance(`Token number ${number}`);
+                message.lang = 'en-US'; 
+                window.speechSynthesis.speak(message);
+                lastToken = number;
+            }
+        }
+
         setInterval(async () => {
-            const res = await fetch('https://smart-queue-systemuvicorn-main-app-host.onrender.com');
-            const data = await res.json();
-            document.getElementById('token').innerText = data.serving_token;
-            document.getElementById('name').innerText = data.serving_name;
-            document.getElementById('count').innerText = data.waiting_count;
+            try {
+                // Added /status to your Render link so it works correctly
+                const res = await fetch('https://smart-queue-systemuvicorn-main-app-host.onrender.com/status');
+                const data = await res.json();
+                
+                document.getElementById('token').innerText = data.serving_token;
+                document.getElementById('name').innerText = data.serving_name;
+                document.getElementById('count').innerText = data.waiting_count;
+
+                // Call the voice function
+                announceToken(data.serving_token);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         }, 2000);
     </script>
 </body>
